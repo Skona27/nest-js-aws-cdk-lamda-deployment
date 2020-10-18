@@ -1,18 +1,29 @@
-import * as sns from '@aws-cdk/aws-sns';
-import * as subs from '@aws-cdk/aws-sns-subscriptions';
-import * as sqs from '@aws-cdk/aws-sqs';
-import * as cdk from '@aws-cdk/core';
+import * as cdk from "@aws-cdk/core";
+import * as lambda from "@aws-cdk/aws-lambda";
+import * as gateway from "@aws-cdk/aws-apigateway";
 
 export class CdkNestStack extends cdk.Stack {
   constructor(scope: cdk.App, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    const queue = new sqs.Queue(this, 'CdkNestQueue', {
-      visibilityTimeout: cdk.Duration.seconds(300)
+    const testLambda = new lambda.Function(this, "TestHanlder", {
+      runtime: lambda.Runtime.NODEJS_12_X,
+      code: lambda.Code.fromAsset("lambda/test"),
+      handler: "index.handler"
     });
 
-    const topic = new sns.Topic(this, 'CdkNestTopic');
+    const backendLambda = new lambda.Function(this, "BackendHandler", {
+      runtime: lambda.Runtime.NODEJS_12_X,
+      code: lambda.Code.fromAsset("lambda/api"),
+      handler: "index.handler"
+    });
 
-    topic.addSubscription(new subs.SqsSubscription(queue));
+    new gateway.LambdaRestApi(this, "TestEndpoint", {
+      handler: testLambda
+    });
+
+    new gateway.LambdaRestApi(this, "BackendEndpoint", {
+      handler: backendLambda
+    });
   }
 }
