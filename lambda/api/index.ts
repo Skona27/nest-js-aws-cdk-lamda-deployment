@@ -15,11 +15,11 @@ async function bootstrap(): Promise<Server> {
   return createServer(expressApp);
 }
 
-exports.handler = async (event: any, context: Context): Promise<Response> => {
+export async function handler(event: any, context: Context): Promise<Response> {
   if (!cachedServer) {
     const server = await bootstrap();
     cachedServer = server;
   }
 
   return proxy(cachedServer, event, context, "PROMISE").promise;
-};
+}
