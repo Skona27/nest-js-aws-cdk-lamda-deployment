@@ -22,4 +22,4 @@ You can now start building your backend.
 
 ## Details
 Powered by `aws-serverless-express`. NestJs applications is being bootstraped in our `BackendLambda`, then all the request are being redirected to NestJS server.
-We cache the server instance in order to have it ready for lamda's warm start.
+We cache the server instance in order to have it ready for lamda's warm start (`lambda/api/index.ts`).
