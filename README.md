@@ -1,6 +1,8 @@
 # nest-js-aws-cdk-lamda-deployment
 Deploy your NestJS application to AWS Lambda with AWS CDK.
 
+![logo](https://blog.theodo.com/static/7d1614ffec5ffb9bfee74cb7cf455109/c7dcc/serverless-nestJS-1.png)
+
 ## Deployment
 AWS account is required.
 After cloning this repo all you need to do build an application and deploy it.
